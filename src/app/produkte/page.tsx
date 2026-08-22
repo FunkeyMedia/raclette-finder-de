@@ -11,7 +11,7 @@ export default function ProductsPage() {
         <div className="site-width">
           <p className="eyebrow"><span />Produktübersicht</p>
           <h1>200 Geräte. 50 Zubehörideen.</h1>
-          <p>Alle Einträge erhalten ein sichtbares, neutrales Bauart-Symbolbild. Für die Auswahl zählt weiterhin der dokumentierte Datensatz.</p>
+          <p>Jeder Eintrag zeigt das unveränderte, Amazon-gehostete Hauptbild der jeweiligen ASIN. Ein Klick auf das Produktfoto führt transparent gekennzeichnet zu Amazon.</p>
         </div>
       </section>
       <section className="catalog-section">

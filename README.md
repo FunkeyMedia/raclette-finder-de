@@ -71,9 +71,9 @@ Für einen erneuten Import aus dem Recherche-Export kann `scripts/sync-products.
 
 ## Bildkonzept
 
-Die Homepage und der Finder verwenden eigenständig erzeugte, markenfreie Lifestyle-Motive aus `public/images/`. Produktkarten und Detailseiten ordnen jedem Datensatz eines von fünf transparent freigestellten Bauart-Symbolbildern zu. Diese Motive sind sichtbar als „KI-Symbolbild · Bauart ähnlich · kein Originalfoto“ gekennzeichnet und dürfen nicht als exakte Darstellung eines konkreten Amazon-Artikels verstanden werden.
+Die Homepage und der Finder verwenden eigenständig erzeugte, markenfreie Lifestyle-Motive aus `public/images/`. Produktkarten, Vergleich und Detailseiten verwenden dagegen ausschließlich die Amazon-gehosteten Hauptbilder der jeweiligen ASIN. Die 250 geprüften Zuordnungen liegen in `src/data/product-images.json`; es werden keine Amazon-Produktbilder in diesem Repository gespeichert oder gestalterisch verändert.
 
-Für echte Original-Produktbilder sollte der Betreiber ausschließlich rechtmäßig bereitgestellte Amazon-Product-Advertising-API-Bild-URLs oder vom Hersteller freigegebene Medien ergänzen. Ein KI-Symbolbild darf nie stillschweigend als Originalfoto ausgegeben werden.
+Produktbilder sind als Amazon-Affiliate-Links gekennzeichnet und führen zum zugehörigen Artikel. Da sich Amazon-Angebote und Bildadressen ändern können, muss die Zuordnung regelmäßig gegen die jeweilige Produktseite geprüft und bei Bedarf aktualisiert werden. Für neue Produkte darf kein generisches oder KI-erzeugtes Bild als Originalfoto ausgegeben werden.
 
 ## Finder- und Ranking-Logik
 
