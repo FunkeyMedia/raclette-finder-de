@@ -18,9 +18,9 @@ export default function ProductsPage() {
         <div className="site-width">
           <div className="catalog-intro">
             <div><p className="section-number">Raclette-Geräte</p><h2>Eine kuratierte Übersicht.</h2></div>
-            <p>Die ersten 24 Modelle im Überblick. Alle 200 Geräte fließen in Finder und Ergebnisberechnung ein.</p>
+            <p>Alle {devices.length} dokumentierten Modelle im Überblick und als Grundlage für Finder und Ergebnisberechnung.</p>
           </div>
-          <div className="product-grid catalog-grid">{devices.slice(0, 24).map((product) => <ProductCard key={product.id} product={product} />)}</div>
+          <div className="product-grid catalog-grid">{devices.map((product) => <ProductCard key={product.id} product={product} />)}</div>
           <div className="catalog-intro accessories">
             <div><p className="section-number">Zubehör</p><h2>Die sinnvollen Ergänzungen.</h2></div>
             <p>Alle {accessories.length} dokumentierten Zubehörprodukte – von Schabern bis Ersatzpfännchen.</p>
