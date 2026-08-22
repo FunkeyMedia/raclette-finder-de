@@ -77,7 +77,7 @@ Produktbilder sind als Amazon-Affiliate-Links gekennzeichnet und führen zum zug
 
 ## Finder- und Ranking-Logik
 
-Die Vorauswahl schließt Geräte aus, deren dokumentierte Kapazität deutlich unter der gewählten Runde liegt. Anschließend werden die verbleibenden Produkte anhand von Personenzahl, Budgetklasse, Plattenart, persönlicher Priorität, dokumentierter Verfügbarkeit und Datenqualität gewichtet.
+Die Vorauswahl schließt Geräte aus, deren dokumentierte Kapazität deutlich unter der gewählten Runde liegt. Eine ausdrücklich gewählte Budgetklasse ist ein hartes Ausschlusskriterium: `low` erlaubt höchstens 55 €, `mid` 35–105 € und `premium` mindestens 85 €. Produkte ohne dokumentierten Preis werden bei einer festen Budgetwahl nicht empfohlen. Nur bei `any` bleibt das Budget offen. Anschließend werden die verbleibenden Produkte anhand von Personenzahl, Plattenart, persönlicher Priorität, dokumentierter Verfügbarkeit und Datenqualität gewichtet.
 
 Der Score ist eine Ähnlichkeitsbewertung und weder Testnote noch Qualitätsgarantie. Fehlende Angaben erzeugen sichtbare Hinweise. Die mögliche Affiliate-Provision beeinflusst den Score nicht.
 

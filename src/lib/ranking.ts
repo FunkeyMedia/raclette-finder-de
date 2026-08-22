@@ -7,6 +7,13 @@ const budgets = {
   any: { min: 0, max: Number.POSITIVE_INFINITY },
 };
 
+export function productFitsBudget(product: Product, budget: FinderAnswers["budget"]) {
+  if (budget === "any") return true;
+  if (product.price === null) return false;
+  const range = budgets[budget];
+  return product.price >= range.min && product.price <= range.max;
+}
+
 function plateMatch(product: Product, preference: FinderAnswers["plate"]) {
   if (preference === "any" || preference === "flexible") return 1;
   const plate = product.plate.toLowerCase();
@@ -15,10 +22,10 @@ function plateMatch(product: Product, preference: FinderAnswers["plate"]) {
 }
 
 export function rankProducts(allProducts: Product[], answers: FinderAnswers): RankedProduct[] {
-  const range = budgets[answers.budget];
   return allProducts
     .filter((product) => product.type === "device")
     .filter((product) => !product.people || product.people >= Math.max(2, answers.people - 1))
+    .filter((product) => productFitsBudget(product, answers.budget))
     .map((product) => {
       let score = 48;
       const reasons: string[] = [];
@@ -33,14 +40,9 @@ export function rankProducts(allProducts: Product[], answers: FinderAnswers): Ra
         cautions.push("Personenzahl nicht eindeutig angegeben");
       }
 
-      if (product.price !== null) {
-        if (product.price >= range.min && product.price <= range.max) {
-          score += 15;
-          reasons.push("Passt in deine gewählte Budgetklasse");
-        } else if (answers.budget !== "any") {
-          score -= 12;
-          cautions.push("Liegt außerhalb deiner Budgetklasse");
-        }
+      if (answers.budget !== "any") {
+        score += 15;
+        reasons.push("Preis liegt im gewählten Budgetrahmen");
       }
 
       if (plateMatch(product, answers.plate)) {
