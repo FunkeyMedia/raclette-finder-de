@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# raclette-finder.de
 
-## Getting Started
+Eine deutschsprachige Produktempfehlungs-, Finder- und Vergleichswebsite für Raclette-Geräte. Das Projekt übersetzt dokumentierte Produktmerkmale in nachvollziehbare Empfehlungen und finanziert sich transparent über gekennzeichnete Amazon-Affiliate-Links.
 
-First, run the development server:
+## Funktionen
+
+- geführter Finder und Schnellmodus mit lokal gespeichertem Zwischenstand
+- regelbasierter Match-Score mit sichtbaren Gründen und Einschränkungen
+- beste Gesamtempfehlung, preisbewusste Alternative und Premium-/Spezialalternative
+- Vergleich von zwei bis vier Geräten ohne Preis- oder Testversprechen
+- 200 statisch erzeugte Gerätedetailseiten und 50 vorbereitete Zubehördatensätze
+- Kaufberatung, Methodik, Über-uns-, Kontakt- und Transparenzseiten
+- Impressums- und Datenschutzvorlagen mit deutlich markierten Betreiberpflichten
+- Sitemap, robots.txt, kanonische URLs, Open Graph und Produkt-JSON-LD ohne unzulässige Angebotsdaten
+- datensparsames Affiliate-Klickereignis ohne Namen, E-Mail oder geräteübergreifende Werbe-ID
+
+## Technologie
+
+- Next.js 16 mit App Router
+- React 19 und TypeScript
+- Tailwind CSS 4 als CSS-Toolchain; das Designsystem liegt in `src/app/globals.css`
+- Server Components für Inhalte und Produktseiten
+- kleine Client Components nur für Navigation, Finder und Affiliate-Klickmessung
+- Vercel als Zielplattform
+
+## Lokale Einrichtung
+
+Voraussetzungen: Node.js 20.9 oder neuer und pnpm.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
+cp .env.example .env.local
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Produktionsprüfung:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm lint
+pnpm typecheck
+pnpm build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Umgebungsvariablen
 
-## Learn More
+| Variable | Zweck |
+| --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | kanonischer Ursprung für Sitemap und Metadaten |
+| `NEXT_PUBLIC_AMAZON_ASSOCIATE_ID` | zentrale Amazon-Partnerkennung; Standard `onlinestarkei-21` |
 
-To learn more about Next.js, take a look at the following resources:
+Die Partner-ID wird in `src/config/site.ts` gelesen. Die einzelnen, geprüften SiteStripe-Kurzlinks liegen produktbezogen in `src/data/products.json`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Datenmodell und Architektur
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`src/data/products.json` enthält Geräte und Zubehör. Wesentliche Felder sind interne ID, ASIN, Marke, Modell, Titel, Produkttyp, Personenzahl, Leistung, Plattenart, Preisstand, Verfügbarkeit, Eigenschaften, Prüfdatum, Amazon-Quellseite und Affiliate-Link.
 
-## Deploy on Vercel
+- Daten: `src/data/`
+- Ranking: `src/lib/ranking.ts`
+- Finder-Oberfläche: `src/components/finder.tsx`
+- Produktdarstellung: `src/components/product-card.tsx`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Neue Produkte ergänzen
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Einen Datensatz mit den bestehenden Feldern in `src/data/products.json` ergänzen.
+2. Eine eindeutige interne ID und ASIN verwenden.
+3. Affiliate-Link, Tracking-ID, Quelle und Prüfzeitpunkt dokumentieren.
+4. Keine ungeprüften Echtzeitpreise, Verfügbarkeiten oder Testbehauptungen eintragen.
+5. `pnpm lint`, `pnpm typecheck` und `pnpm build` ausführen.
+
+Für einen erneuten Import aus dem Recherche-Export kann `scripts/sync-products.mjs` verwendet werden. Standardmäßig erwartet das Skript `../outputs/raclette-finder-phase1`; alternativ kann `PRODUCT_SOURCE_DIR` auf einen anderen Ordner zeigen.
+
+## Finder- und Ranking-Logik
+
+Die Vorauswahl schließt Geräte aus, deren dokumentierte Kapazität deutlich unter der gewählten Runde liegt. Anschließend werden die verbleibenden Produkte anhand von Personenzahl, Budgetklasse, Plattenart, persönlicher Priorität, dokumentierter Verfügbarkeit und Datenqualität gewichtet.
+
+Der Score ist eine Ähnlichkeitsbewertung und weder Testnote noch Qualitätsgarantie. Fehlende Angaben erzeugen sichtbare Hinweise. Die mögliche Affiliate-Provision beeinflusst den Score nicht.
+
+## Affiliate-Umsetzung
+
+Externe Kaufbuttons sind mit `rel="sponsored noopener noreferrer"` gekennzeichnet und öffnen Amazon direkt. Beim Klick sendet der Browser ausschließlich die interne Produkt-ID an `/api/affiliate-click`. Es werden dabei keine Namen oder E-Mail-Adressen übermittelt. Eine produktive Analytics- oder Log-Aufbewahrung muss der Betreiber vor Livebetrieb datenschutzrechtlich konfigurieren und dokumentieren.
+
+## Deployment auf Vercel
+
+```bash
+vercel link
+vercel env add NEXT_PUBLIC_SITE_URL production
+vercel env add NEXT_PUBLIC_AMAZON_ASSOCIATE_ID production
+vercel deploy --prod
+```
+
+Bei GitHub-Verknüpfung erzeugt Vercel für weitere Commits automatisch Vorschau-Deployments. Domain und DNS für `raclette-finder.de` werden anschließend im Vercel-Projekt verbunden.
+
+## Betreibermaßnahmen vor öffentlichem Produktivbetrieb
+
+- Impressum und Datenschutz mit echten Betreiberangaben rechtlich prüfen und vervollständigen
+- `hallo@raclette-finder.de` einrichten oder die Kontaktadresse ersetzen
+- Domain-DNS verbinden
+- Datenverarbeitungs- und Aufbewahrungskonfiguration von Vercel prüfen
+- Produktpreise, Verfügbarkeit und Affiliate-Links regelmäßig aktualisieren
+- Nutzungsrechte prüfen, bevor Händler- oder Herstellerbilder ergänzt werden
+
+## Qualitätsstatus
+
+Die Kernrouten werden statisch oder serverseitig durch Next.js erzeugt. Der Finder-Ablauf, Ergebniswechsel, Vergleich, Detailseiten, mobile Darstellung, Tastaturbedienbarkeit, Fehlerfreiheit im Browser und WCAG-2.2-AA-Regeln werden vor jedem Produktions-Release geprüft.

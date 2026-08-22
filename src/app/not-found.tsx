@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function NotFound() { return <main className="not-found"><div><p className="error-code">404</p><h1>Dieses Pfännchen ist leer.</h1><p>Die gesuchte Seite ist nicht mehr da – der Finder wartet aber schon auf dich.</p><div><Link className="button button-primary" href="/finder">Finder starten →</Link><Link className="outline-link light" href="/">Zur Startseite</Link></div></div></main>; }

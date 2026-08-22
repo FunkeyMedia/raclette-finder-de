@@ -1,0 +1,2 @@
+"use client";
+export default function ErrorPage({ reset }: { error: Error & { digest?: string }; reset: () => void }) { return <main className="not-found"><div><p className="error-code">Hoppla</p><h1>Hier ist etwas zu heiß geworden.</h1><p>Bitte versuche es erneut. Deine lokal gespeicherten Finder-Antworten bleiben erhalten.</p><button className="button button-primary" type="button" onClick={reset}>Erneut versuchen</button></div></main>; }
