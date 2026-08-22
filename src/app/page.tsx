@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ProductCard } from "@/components/product-card";
 import { devices } from "@/data/products";
 
@@ -6,6 +7,15 @@ export default function Home() {
   return (
     <main>
       <section className="hero-shell">
+        <Image
+          alt="Fünf Freunde genießen gemeinsam einen Raclette-Abend"
+          className="hero-photo"
+          fill
+          priority
+          sizes="100vw"
+          src="/images/hero-raclette-evening.png"
+        />
+        <div className="hero-photo-shade" aria-hidden="true" />
         <div className="hero-glow" aria-hidden="true" />
         <div className="site-width hero-grid">
           <div className="hero-copy">
@@ -23,18 +33,7 @@ export default function Home() {
             </ul>
           </div>
           <div className="hero-stage">
-            <div className="steam steam-one" aria-hidden="true" /><div className="steam steam-two" aria-hidden="true" />
-            <article className="finder-preview">
-              <div className="preview-topline"><span>Schritt 1 von 5</span><span>20 %</span></div>
-              <div className="progress-track"><span /></div>
-              <p className="preview-kicker">Eure Runde</p>
-              <h2>Wie viele Menschen sitzen meistens am Tisch?</h2>
-              <div className="answer-grid" aria-hidden="true">
-                <div><span>2</span>Zu zweit</div><div className="selected"><span>4–6</span>Lieblingsrunde</div><div><span>8+</span>Große Tafel</div>
-              </div>
-              <div className="preview-result"><span className="preview-orb" /><p><strong>Erste Tendenz</strong>Raclette für 6–8 Personen</p></div>
-            </article>
-            <div className="cheese-card" aria-hidden="true"><span className="cheese-wheel" /><p><strong>Warm. Gemeinsam.</strong><br />Genau euer Abend.</p></div>
+            <div className="hero-image-caption"><span>Gemeinsam statt kompliziert</span><strong>In wenigen Fragen zur passenden Tischrunde.</strong></div>
           </div>
         </div>
       </section>

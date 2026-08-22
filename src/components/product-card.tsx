@@ -9,7 +9,7 @@ export function ProductCard({ product, label, showScore = false }: { product: Pr
   return (
     <article className="product-card">
       {label ? <p className="card-label">{label}</p> : null}
-      <ProductVisual brand={product.brand} compact />
+      <ProductVisual product={product} compact />
       <div className="product-card-body">
         <p className="product-brand">{product.brand} · {product.people ? `${product.people} Personen` : product.subcategory}</p>
         <h3><Link href={`/produkte/${product.asin}`}>{product.title}</Link></h3>

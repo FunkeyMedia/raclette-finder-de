@@ -69,6 +69,12 @@ Die Partner-ID wird in `src/config/site.ts` gelesen. Die einzelnen, geprüften S
 
 Für einen erneuten Import aus dem Recherche-Export kann `scripts/sync-products.mjs` verwendet werden. Standardmäßig erwartet das Skript `../outputs/raclette-finder-phase1`; alternativ kann `PRODUCT_SOURCE_DIR` auf einen anderen Ordner zeigen.
 
+## Bildkonzept
+
+Die Homepage und der Finder verwenden eigenständig erzeugte, markenfreie Lifestyle-Motive aus `public/images/`. Produktkarten und Detailseiten ordnen jedem Datensatz eines von fünf transparent freigestellten Bauart-Symbolbildern zu. Diese Motive sind sichtbar als „KI-Symbolbild · Bauart ähnlich · kein Originalfoto“ gekennzeichnet und dürfen nicht als exakte Darstellung eines konkreten Amazon-Artikels verstanden werden.
+
+Für echte Original-Produktbilder sollte der Betreiber ausschließlich rechtmäßig bereitgestellte Amazon-Product-Advertising-API-Bild-URLs oder vom Hersteller freigegebene Medien ergänzen. Ein KI-Symbolbild darf nie stillschweigend als Originalfoto ausgegeben werden.
+
 ## Finder- und Ranking-Logik
 
 Die Vorauswahl schließt Geräte aus, deren dokumentierte Kapazität deutlich unter der gewählten Runde liegt. Anschließend werden die verbleibenden Produkte anhand von Personenzahl, Budgetklasse, Plattenart, persönlicher Priorität, dokumentierter Verfügbarkeit und Datenqualität gewichtet.
@@ -88,7 +94,7 @@ vercel env add NEXT_PUBLIC_AMAZON_ASSOCIATE_ID production
 vercel deploy --prod
 ```
 
-Bei GitHub-Verknüpfung erzeugt Vercel für weitere Commits automatisch Vorschau-Deployments. Domain und DNS für `raclette-finder.de` werden anschließend im Vercel-Projekt verbunden.
+Der aktuelle Produktionsstand wurde direkt mit dem verknüpften Vercel-Projekt veröffentlicht. Domain und DNS für `raclette-finder.de` werden anschließend im Vercel-Projekt verbunden.
 
 ## Betreibermaßnahmen vor öffentlichem Produktivbetrieb
 

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Suspense } from "react";
 import { Finder } from "@/components/finder";
 
 export const metadata: Metadata = { title: "Raclette-Finder starten", description: "Finde mit wenigen verständlichen Fragen das Raclette, das zu eurer Runde, eurem Budget und euren Vorlieben passt.", alternates: { canonical: "/finder" } };
 
 export default function FinderPage() {
-  return <main className="finder-page"><div className="finder-backdrop" aria-hidden="true" /><div className="site-width"><p className="finder-page-kicker">Persönliche Entscheidungshilfe</p><Suspense fallback={<div className="finder-loading">Finder wird vorbereitet …</div>}><Finder /></Suspense></div></main>;
+  return <main className="finder-page"><Image alt="Raclette-Zutaten und Hände an einer gemeinsamen Tafel" className="finder-photo" fill priority sizes="100vw" src="/images/finder-raclette-table.png" /><div className="finder-backdrop" aria-hidden="true" /><div className="site-width"><p className="finder-page-kicker">Persönliche Entscheidungshilfe</p><Suspense fallback={<div className="finder-loading">Finder wird vorbereitet …</div>}><Finder /></Suspense></div></main>;
 }
