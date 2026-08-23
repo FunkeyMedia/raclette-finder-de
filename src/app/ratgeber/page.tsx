@@ -257,22 +257,55 @@ const chapters: RecipeChapter[] = [
 
 const allRecipes = chapters.flatMap((chapter) => chapter.recipes);
 
+const recipeImages = [
+  "01-alpen-klassiker.jpg",
+  "02-flammkuchen.jpg",
+  "03-pizza-margherita.jpg",
+  "04-kaesespaetzle.jpg",
+  "05-caprese-pesto.jpg",
+  "06-waldpilz-thymian.jpg",
+  "07-kuerbis-ziege-honig.jpg",
+  "08-gruener-garten.jpg",
+  "09-mexico-fuego.jpg",
+  "10-griechische-nacht.jpg",
+  "11-thai-curry.jpg",
+  "12-seoul-cheese-melt.jpg",
+  "13-teriyaki-chicken.jpg",
+  "14-steakhouse.jpg",
+  "15-lachs-dill-zitrone.jpg",
+  "16-garnelen-knoblauchbutter.jpg",
+  "17-apfelstrudel.jpg",
+  "18-birne-schokolade.jpg",
+  "19-banane-salted-caramel.jpg",
+  "20-beeren-cheesecake.jpg",
+] as const;
+
 function RecipeCard({ recipe, index }: { recipe: Recipe; index: number }) {
   return (
     <article className="recipe-card">
-      <div className="recipe-card-topline">
-        <span className="recipe-index">{String(index + 1).padStart(2, "0")}</span>
-        <span className="recipe-mood">{recipe.mood}</span>
-      </div>
-      <h3>{recipe.title}</h3>
-      <p className="recipe-teaser">{recipe.teaser}</p>
-      <div className="recipe-detail">
-        <strong>Ins Pfännchen</strong>
-        <p>{recipe.ingredients}</p>
-      </div>
-      <div className="recipe-detail recipe-method">
-        <strong>So geht&apos;s</strong>
-        <p>{recipe.method}</p>
+      <figure className="recipe-card-image">
+        <Image
+          alt={`${recipe.title} in einem kleinen Raclette-Pfännchen`}
+          fill
+          sizes="(max-width: 620px) calc(100vw - 28px), (max-width: 1180px) 50vw, 580px"
+          src={`/images/recipes/${recipeImages[index]}`}
+        />
+      </figure>
+      <div className="recipe-card-content">
+        <div className="recipe-card-topline">
+          <span className="recipe-index">{String(index + 1).padStart(2, "0")}</span>
+          <span className="recipe-mood">{recipe.mood}</span>
+        </div>
+        <h3>{recipe.title}</h3>
+        <p className="recipe-teaser">{recipe.teaser}</p>
+        <div className="recipe-detail">
+          <strong>Ins Pfännchen</strong>
+          <p>{recipe.ingredients}</p>
+        </div>
+        <div className="recipe-detail recipe-method">
+          <strong>So geht&apos;s</strong>
+          <p>{recipe.method}</p>
+        </div>
       </div>
     </article>
   );
