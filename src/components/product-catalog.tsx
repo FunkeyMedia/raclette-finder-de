@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import type { Product } from "@/data/types";
 import { ProductCard } from "./product-card";
+import { useAmazonProducts } from "@/lib/use-amazon-products";
 
 type ProductKind = "all" | Product["type"];
 type PriceRange = "all" | "under-40" | "40-80" | "over-80";
@@ -91,6 +92,8 @@ export function ProductCatalog({ products }: { products: Product[] }) {
   }, [brand, kind, people, plate, price, products, query, sort]);
 
   const visibleProducts = filteredProducts.slice(0, visibleCount);
+  const visibleAsins = useMemo(() => visibleProducts.map((product) => product.asin), [visibleProducts]);
+  const amazonProducts = useAmazonProducts(visibleAsins);
   const remaining = Math.max(0, filteredProducts.length - visibleProducts.length);
   const hasFilters = query !== "" || kind !== "all" || brand !== "all" || people !== "all" || price !== "all" || plate !== "all";
 
@@ -207,7 +210,7 @@ export function ProductCatalog({ products }: { products: Product[] }) {
           {visibleProducts.length ? (
             <>
               <div className="product-grid catalog-grid catalog-filtered-grid">
-                {visibleProducts.map((product) => <ProductCard key={product.id} product={product} />)}
+                {visibleProducts.map((product) => <ProductCard key={product.id} product={product} amazon={amazonProducts.items[product.asin]} amazonLoading={amazonProducts.loading} />)}
               </div>
               {remaining > 0 ? <div className="catalog-load-more"><p>{visibleProducts.length} von {filteredProducts.length} Produkten</p><div><button type="button" className="button button-primary" onClick={() => setVisibleCount((current) => current + PAGE_SIZE)}>Weitere {Math.min(PAGE_SIZE, remaining)} anzeigen</button><button type="button" className="catalog-show-all" onClick={() => setVisibleCount(filteredProducts.length)}>Alle anzeigen</button></div></div> : null}
             </>

@@ -1,19 +1,14 @@
 import Image from "next/image";
-import type { Product } from "@/data/types";
-import productImages from "@/data/product-images.json";
-
-const exactAmazonImages = productImages as Record<string, string>;
-
-function getAmazonImageUrl(asin: string) {
-  return exactAmazonImages[asin] ?? `https://m.media-amazon.com/images/P/${encodeURIComponent(asin)}.01.LZZZZZZZ.jpg`;
-}
+import type { AmazonProductData, Product } from "@/data/types";
 
 export function ProductVisual({
   product,
+  amazon,
   brand,
   compact = false,
 }: {
   product?: Product;
+  amazon?: AmazonProductData;
   brand?: string;
   compact?: boolean;
 }) {
@@ -27,27 +22,35 @@ export function ProductVisual({
 
   const brandName = product.brand || brand || "Raclette";
 
+  if (!amazon?.imageUrl) {
+    return (
+      <figure className={`product-visual product-visual-missing ${compact ? "is-compact" : ""}`}>
+        <div className="amazon-image-placeholder" aria-hidden="true"><span>amazon.de</span></div>
+        <p>Originalbild wird bei Amazon geladen</p>
+      </figure>
+    );
+  }
+
   return (
     <figure className={`product-visual ${compact ? "is-compact" : ""}`}>
       <a
         className="product-image-link"
-        href={product.affiliateUrl}
+        href={amazon.detailPageUrl}
         target="_blank"
         rel="sponsored noopener noreferrer"
         aria-label={`${product.title} bei Amazon ansehen (Affiliate-Link)`}
       >
-        {/* Das ASIN-basierte Originalbild wird direkt von Amazon ausgeliefert und nicht lokal gespeichert. */}
         <Image
           alt={`${brandName}: ${product.title} – Original-Produktbild von Amazon`}
           className="product-image"
           fill
           loading={compact ? "lazy" : "eager"}
           sizes={compact ? "(max-width: 620px) 100vw, (max-width: 980px) 50vw, 33vw" : "(max-width: 860px) 100vw, 50vw"}
-          src={getAmazonImageUrl(product.asin)}
+          src={amazon.imageUrl}
           unoptimized
         />
       </a>
-      <figcaption>Original-Produktbild · Amazon-Affiliate-Link</figcaption>
+      <figcaption>Originalbild von Amazon</figcaption>
     </figure>
   );
 }

@@ -3,8 +3,9 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import { AffiliateLink } from "@/components/affiliate-link";
 import { ProductVisual } from "@/components/product-visual";
-import { devices, formatPrice, productByAsin } from "@/data/products";
+import { devices, productByAsin } from "@/data/products";
 import type { Product } from "@/data/types";
+import { getAmazonProducts } from "@/lib/amazon-creators-api";
 
 export const metadata: Metadata = {
   title: "Raclette-Vergleich",
@@ -26,6 +27,7 @@ export default async function ComparePage({
     .filter((product): product is Product => product?.type === "device")
     .slice(0, 4);
   const products = selected.length >= 2 ? selected : devices.slice(0, 3);
+  const amazonProducts = await getAmazonProducts(products.map((product) => product.asin));
   const rows = [
     {
       label: "Passende Runde",
@@ -35,8 +37,8 @@ export default async function ComparePage({
           : "Nicht eindeutig angegeben",
     },
     {
-      label: "Zuletzt geprüfter Preis",
-      value: (product: (typeof products)[number]) => formatPrice(product.price),
+      label: "Aktueller Amazon-Preis",
+      value: (product: (typeof products)[number]) => amazonProducts.get(product.asin)?.priceDisplay ?? "Bei Amazon prüfen",
     },
     {
       label: "Leistung",
@@ -90,7 +92,7 @@ export default async function ComparePage({
             </div>
             {products.map((product) => (
               <article className="compare-product" key={product.id}>
-                <ProductVisual product={product} compact />
+                <ProductVisual product={product} amazon={amazonProducts.get(product.asin)} compact />
                 <p>{product.brand}</p>
                 <h2>
                   <Link href={`/produkte/${product.asin}`}>
@@ -98,7 +100,7 @@ export default async function ComparePage({
                   </Link>
                 </h2>
                 <AffiliateLink
-                  href={product.affiliateUrl}
+                  href={amazonProducts.get(product.asin)?.detailPageUrl ?? product.affiliateUrl}
                   productId={product.id}
                   className="amazon-button small"
                 />
@@ -114,9 +116,9 @@ export default async function ComparePage({
             ))}
           </div>
           <p className="table-note">
-            * Bewertung und Anzahl stammen von der Amazon-Produktseite zum
-            dokumentierten Prüfzeitpunkt. Keine eigene Testbewertung. Aktuelle
-            Angaben bitte bei Amazon prüfen.
+            * Preise und Originalbilder stammen aus der Amazon Creators API.
+            Bewertungen sind dokumentierte Momentaufnahmen und keine eigene
+            Testbewertung. Aktuelle Angaben bitte bei Amazon prüfen.
           </p>
           <div className="compare-bottom">
             <Link href="/finder">Finder neu starten</Link>

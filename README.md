@@ -8,11 +8,12 @@ Eine deutschsprachige Produktempfehlungs-, Finder- und Vergleichswebsite für Ra
 - regelbasierter Match-Score mit sichtbaren Gründen und Einschränkungen
 - beste Gesamtempfehlung, preisbewusste Alternative und Premium-/Spezialalternative
 - Vergleich von zwei bis vier Geräten ohne Preis- oder Testversprechen
-- 200 statisch erzeugte Gerätedetailseiten und 50 vorbereitete Zubehördatensätze
+- 200 Gerätedetailseiten und 50 vorbereitete Zubehördatensätze
 - Kaufberatung, Methodik, Über-uns-, Kontakt- und Transparenzseiten
 - Impressums- und Datenschutzvorlagen mit deutlich markierten Betreiberpflichten
 - Sitemap, robots.txt, kanonische URLs, Open Graph und Produkt-JSON-LD ohne unzulässige Angebotsdaten
 - datensparsames Affiliate-Klickereignis ohne Namen, E-Mail oder geräteübergreifende Werbe-ID
+- serverseitige Amazon Creators API für Originalbilder, aktuelle Angebotspreise und Verfügbarkeit
 
 ## Technologie
 
@@ -47,8 +48,13 @@ pnpm build
 | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | kanonischer Ursprung für Sitemap und Metadaten |
 | `NEXT_PUBLIC_AMAZON_ASSOCIATE_ID` | zentrale Amazon-Partnerkennung; Standard `onlinestarkei-21` |
+| `AMAZON_CREATORS_CLIENT_ID` | Client-ID aus PartnerNet; ausschließlich serverseitig |
+| `AMAZON_CREATORS_CLIENT_SECRET` | Client-Secret aus PartnerNet; ausschließlich serverseitig |
+| `AMAZON_PARTNER_TAG` | Partner-Tag für den deutschen Marketplace |
+| `AMAZON_MARKETPLACE` | Marketplace-Domain, standardmäßig `www.amazon.de` |
+| `AMAZON_CREATORS_TOKEN_URL` | OAuth-Endpunkt für EU-Credentials (Version 3.2) |
 
-Die Partner-ID wird in `src/config/site.ts` gelesen. Die einzelnen, geprüften SiteStripe-Kurzlinks liegen produktbezogen in `src/data/products.json`.
+Die Creators-API-Zugangsdaten werden ausschließlich serverseitig gelesen. Die einzelnen SiteStripe-Kurzlinks in `src/data/products.json` dienen als Ausweichziel, falls Amazon für eine ASIN vorübergehend keine API-Daten liefert.
 
 ## Datenmodell und Architektur
 
@@ -71,9 +77,9 @@ Für einen erneuten Import aus dem Recherche-Export kann `scripts/sync-products.
 
 ## Bildkonzept
 
-Die Homepage und der Finder verwenden eigenständig erzeugte, markenfreie Lifestyle-Motive aus `public/images/`. Produktkarten, Vergleich und Detailseiten verwenden dagegen ausschließlich die Amazon-gehosteten Hauptbilder der jeweiligen ASIN. Die 250 geprüften Zuordnungen liegen in `src/data/product-images.json`; es werden keine Amazon-Produktbilder in diesem Repository gespeichert oder gestalterisch verändert.
+Die Homepage und der Finder verwenden eigenständig erzeugte, markenfreie Lifestyle-Motive aus `public/images/`. Produktkarten, Vergleich und Detailseiten verwenden dagegen ausschließlich die von der Creators API gelieferten, Amazon-gehosteten Hauptbilder der jeweiligen ASIN. Es werden keine Amazon-Produktbilder in diesem Repository gespeichert oder gestalterisch verändert.
 
-Produktbilder sind als Amazon-Affiliate-Links gekennzeichnet und führen zum zugehörigen Artikel. Da sich Amazon-Angebote und Bildadressen ändern können, muss die Zuordnung regelmäßig gegen die jeweilige Produktseite geprüft und bei Bedarf aktualisiert werden. Für neue Produkte darf kein generisches oder KI-erzeugtes Bild als Originalfoto ausgegeben werden.
+Produktbilder werden über `images.primary.large` direkt aus der Amazon Creators API geladen und als Amazon-Affiliate-Links gekennzeichnet. Angebotspreise und Verfügbarkeit werden über `OffersV2` bezogen. Die kombinierte Antwort wird wegen der Angebotsdaten höchstens eine Stunde zwischengespeichert. Ohne konfigurierte API-Zugangsdaten zeigt die Oberfläche weder ein erfundenes Produktbild noch einen veralteten Preis als aktuell an.
 
 ## Finder- und Ranking-Logik
 
@@ -91,6 +97,9 @@ Externe Kaufbuttons sind mit `rel="sponsored noopener noreferrer"` gekennzeichne
 vercel link
 vercel env add NEXT_PUBLIC_SITE_URL production
 vercel env add NEXT_PUBLIC_AMAZON_ASSOCIATE_ID production
+vercel env add AMAZON_CREATORS_CLIENT_ID production
+vercel env add AMAZON_CREATORS_CLIENT_SECRET production
+vercel env add AMAZON_PARTNER_TAG production
 vercel deploy --prod
 ```
 

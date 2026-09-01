@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ProductCard } from "@/components/product-card";
 import { devices } from "@/data/products";
+import { getAmazonProducts } from "@/lib/amazon-creators-api";
 
 const featuredRecipes = [
   {
@@ -27,7 +28,9 @@ const featuredRecipes = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const featuredProducts = devices.slice(0, 3);
+  const amazonProducts = await getAmazonProducts(featuredProducts.map((product) => product.asin));
   return (
     <main>
       <section className="hero-shell">
@@ -61,7 +64,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="recommend-section" aria-labelledby="recommend-title"><div className="site-width"><div className="section-heading split"><div><p className="section-number">01 — Raclette-Auswahl</p><h2 id="recommend-title">Drei Raclettes für euren Tisch.</h2></div><Link className="outline-link" href="/produkte">Alle 200 Geräte ansehen</Link></div><div className="product-grid">{devices.slice(0,3).map((product, index) => <ProductCard key={product.id} product={product} label={["Für Paare", "Für große Runden", "Stein & Genuss"][index]} />)}</div></div></section>
+      <section className="recommend-section" aria-labelledby="recommend-title"><div className="site-width"><div className="section-heading split"><div><p className="section-number">01 — Raclette-Auswahl</p><h2 id="recommend-title">Drei Raclettes für euren Tisch.</h2></div><Link className="outline-link" href="/produkte">Alle 200 Geräte ansehen</Link></div><div className="product-grid">{featuredProducts.map((product, index) => <ProductCard key={product.id} product={product} amazon={amazonProducts.get(product.asin)} label={["Für Paare", "Für große Runden", "Stein & Genuss"][index]} />)}</div></div></section>
       <section className="home-recipe-section" aria-labelledby="home-recipes-title">
         <div className="site-width">
           <div className="section-heading split">

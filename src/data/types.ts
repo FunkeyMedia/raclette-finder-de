@@ -35,6 +35,21 @@ export type Product = {
   sourceUrl: string;
 };
 
+export type AmazonProductData = {
+  asin: string;
+  title: string | null;
+  detailPageUrl: string;
+  imageUrl: string | null;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  priceAmount: number | null;
+  priceCurrency: string | null;
+  priceDisplay: string | null;
+  availability: "IN_STOCK" | "OUT_OF_STOCK" | "UNKNOWN";
+  availabilityMessage: string | null;
+  fetchedAt: string;
+};
+
 export type FinderAnswers = {
   people: number;
   budget: "low" | "mid" | "premium" | "any";

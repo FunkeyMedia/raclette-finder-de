@@ -4,15 +4,9 @@ import { notFound } from "next/navigation";
 import { AffiliateLink } from "@/components/affiliate-link";
 import { ProductVisual } from "@/components/product-visual";
 import {
-  formatPrice,
-  getCheckedDate,
   productByAsin,
-  products,
 } from "@/data/products";
-
-export function generateStaticParams() {
-  return products.map((product) => ({ asin: product.asin }));
-}
+import { getAmazonProducts } from "@/lib/amazon-creators-api";
 
 export async function generateMetadata({
   params,
@@ -43,6 +37,7 @@ export default async function ProductPage({
   const { asin } = await params;
   const product = productByAsin.get(asin);
   if (!product) notFound();
+  const amazon = (await getAmazonProducts([product.asin])).get(product.asin);
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -71,16 +66,16 @@ export default async function ProductPage({
             <h1>{product.title}</h1>
             <p className="detail-summary">{product.summary}</p>
             <div className="detail-price">
-              <strong>{formatPrice(product.price)}</strong>
-              <span>Produktdaten geprüft am {getCheckedDate(product)}</span>
+              <strong>{amazon?.priceDisplay ?? "Preis bei Amazon ansehen"}</strong>
+              <span>{amazon?.availability === "IN_STOCK" ? "Aktuell bei Amazon auf Lager" : "Preis und Verfügbarkeit direkt bei Amazon prüfen"}</span>
             </div>
-            <AffiliateLink href={product.affiliateUrl} productId={product.id} />
+            <AffiliateLink href={amazon?.detailPageUrl ?? product.affiliateUrl} productId={product.id}>Auf Amazon.de ansehen <span aria-hidden="true">›</span></AffiliateLink>
             <p className="affiliate-note light">
               * Affiliate-Link. Der Kaufpreis ändert sich dadurch nicht.
               Aktuelle Preise und Verfügbarkeit siehst du bei Amazon.
             </p>
           </div>
-          <ProductVisual product={product} />
+          <ProductVisual product={product} amazon={amazon} />
         </div>
       </section>
       <section className="detail-section">
@@ -155,12 +150,12 @@ export default async function ProductPage({
             <div>
               <strong>Datenquelle</strong>
               <p>
-                Amazon-Produktseite, zuletzt geprüft am{" "}
-                {getCheckedDate(product)}. Angaben können sich ändern.
+                Amazon Creators API. Angebotsdaten werden höchstens eine Stunde,
+                Produktbilder höchstens einen Tag zwischengespeichert.
               </p>
             </div>
             <a
-              href={product.sourceUrl}
+              href={amazon?.detailPageUrl ?? product.sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
