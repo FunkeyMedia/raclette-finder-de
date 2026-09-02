@@ -180,7 +180,7 @@ export const recipes: Recipe[] = seeds.map(([title, category, ingredientText], i
     description: `${title} ist eine einfache Raclette-Idee mit ${ingredients.slice(0, 3).join(", ")}. Zutaten, Zubereitung und Tipps für dein nächstes Pfännchen.`,
     ingredients,
     steps: stepsFor(title, category, ingredients),
-    image: `/images/recipe-blog/original/${recipeNumber}.webp`,
+    image: `/images/recipe-blog/unique/${recipeNumber}.webp`,
     imageAlt: `${title} frisch zubereitet im Raclette-Pfännchen`,
     preparationTime: "10 Minuten",
     cookingTime: "8 Minuten",

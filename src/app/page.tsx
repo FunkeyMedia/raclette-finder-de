@@ -8,7 +8,7 @@ const featuredRecipes = [
   {
     title: "Klassisches Raclette",
     mood: "Herzstück",
-    image: "/images/recipe-blog/original/001.webp",
+    image: "/images/recipe-blog/unique/001.webp",
     slug: "klassisches-raclette",
     alt: "Raclette-Pfännchen mit Kartoffeln, Speck, Käse und Cornichons",
     ingredients: "Kartoffeln · Speck · Raclettekäse · Cornichons",
@@ -16,7 +16,7 @@ const featuredRecipes = [
   {
     title: "Flammkuchen-Pfännchen",
     mood: "Knusperliebe",
-    image: "/images/recipe-blog/original/010.webp",
+    image: "/images/recipe-blog/unique/010.webp",
     slug: "flammkuchen-raclette",
     alt: "Knuspriges Flammkuchen-Pfännchen mit Crème fraîche, Zwiebeln und Speck",
     ingredients: "Fladenbrot · Crème fraîche · Zwiebel · Bergkäse",
@@ -24,7 +24,7 @@ const featuredRecipes = [
   {
     title: "Pizza Margherita",
     mood: "Für alle",
-    image: "/images/recipe-blog/original/011.webp",
+    image: "/images/recipe-blog/unique/011.webp",
     slug: "pizza-margherita",
     alt: "Pizza-Margherita-Pfännchen mit Tomate, Mozzarella und Basilikum",
     ingredients: "Baguette · Tomatensauce · Mozzarella · Basilikum",

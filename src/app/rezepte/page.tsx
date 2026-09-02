@@ -56,7 +56,7 @@ export default function RecipesPage() {
               fill
               preload
               sizes="(max-width: 860px) 100vw, 46vw"
-              src="/images/recipe-blog/alpen.webp"
+              src="/images/recipe-blog/unique/001.webp"
             />
           </figure>
         </div>

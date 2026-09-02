@@ -324,7 +324,9 @@ export default function GuidePage() {
     })),
   };
 
-  let recipeOffset = 0;
+  const recipeOffsets = chapters.map((_, chapterIndex) =>
+    chapters.slice(0, chapterIndex).reduce((sum, chapter) => sum + chapter.recipes.length, 0),
+  );
 
   return (
     <main className="recipe-guide">
@@ -389,8 +391,7 @@ export default function GuidePage() {
       </section>
 
       {chapters.map((chapter, chapterIndex) => {
-        const startIndex = recipeOffset;
-        recipeOffset += chapter.recipes.length;
+        const startIndex = recipeOffsets[chapterIndex];
         return (
           <div key={chapter.id}>
             <section className={`recipe-chapter chapter-${chapter.tone}`} id={chapter.id} aria-labelledby={`${chapter.id}-title`}>
