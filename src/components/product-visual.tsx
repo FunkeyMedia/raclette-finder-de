@@ -25,8 +25,8 @@ export function ProductVisual({
   if (!amazon?.imageUrl) {
     return (
       <figure className={`product-visual product-visual-missing ${compact ? "is-compact" : ""}`}>
-        <div className="amazon-image-placeholder" aria-hidden="true"><span>amazon.de</span></div>
-        <p>Originalbild wird bei Amazon geladen</p>
+        <div className="amazon-image-placeholder" aria-hidden="true"><span>Produktbild</span></div>
+        <p>Originalbild wird geladen</p>
       </figure>
     );
   }

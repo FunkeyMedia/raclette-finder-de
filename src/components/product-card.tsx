@@ -14,6 +14,13 @@ function shortenWords(value: string, limit: number) {
 export function ProductCard({ product, amazon, amazonLoading = false, label, showScore = false }: { product: Product | RankedProduct; amazon?: AmazonProductData; amazonLoading?: boolean; label?: string; showScore?: boolean }) {
   const ranked = product as RankedProduct;
   const cardTitle = shortenWords(product.title, CARD_TITLE_WORDS);
+  const offerPrice = amazon?.priceDisplay
+    ?? (amazonLoading ? "Preis wird geladen …" : amazon?.availability === "OUT_OF_STOCK" ? "Derzeit nicht verfügbar" : "Preis bei Amazon ansehen");
+  const offerAvailability = amazon?.availability === "IN_STOCK"
+    ? amazon.availabilityMessage ?? "Auf Lager bei Amazon"
+    : amazon?.availability === "OUT_OF_STOCK"
+      ? amazon.availabilityMessage ?? "Derzeit nicht bei Amazon verfügbar"
+      : amazon?.availabilityMessage ?? "Preis und Verfügbarkeit können sich ändern";
   const cardFeatures = (showScore && ranked.reasons?.length ? ranked.reasons : product.features)
     .slice(0, 2)
     .map((feature) => ({ full: feature, short: shortenWords(feature, CARD_FEATURE_WORDS) }));
@@ -29,11 +36,11 @@ export function ProductCard({ product, amazon, amazonLoading = false, label, sho
           {cardFeatures.map((feature, featureIndex) => <li key={`${product.id}-${featureIndex}`} title={feature.full}>{feature.short}</li>)}
         </ul>
         <div className="amazon-offer">
-          <div className="amazon-offer-heading"><span>amazon.de</span><small>Aktueller Angebotspreis</small></div>
+          <div className="amazon-offer-heading"><span>Preis &amp; Verfügbarkeit</span><small>Über die Produkt-API</small></div>
           <div className="price-row">
             <div>
-              <strong>{amazon?.priceDisplay ?? (amazonLoading ? "Preis wird geladen …" : "Preis bei Amazon ansehen")}</strong>
-              <small>{amazon?.availability === "IN_STOCK" ? "Auf Lager bei Amazon" : amazon?.availabilityMessage ?? "Preis und Verfügbarkeit können sich ändern"}</small>
+              <strong>{offerPrice}</strong>
+              <small>{offerAvailability}</small>
             </div>
             <Link className="detail-link" href={`/produkte/${product.asin}`}>Details</Link>
           </div>

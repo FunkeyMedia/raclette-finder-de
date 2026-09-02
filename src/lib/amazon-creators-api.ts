@@ -96,7 +96,7 @@ function parseAmazonItem(value: unknown): AmazonProductData | null {
     priceAmount: readNumber(money, "amount") ?? null,
     priceCurrency: readString(money, "currency") ?? null,
     priceDisplay: readString(money, "displayAmount") ?? null,
-    availability: availabilityType === "IN_STOCK" ? "IN_STOCK" : availabilityType === "OUT_OF_STOCK" ? "OUT_OF_STOCK" : "UNKNOWN",
+    availability: availabilityType?.startsWith("IN_STOCK") ? "IN_STOCK" : availabilityType === "OUT_OF_STOCK" ? "OUT_OF_STOCK" : "UNKNOWN",
     availabilityMessage: readString(availability, "message") ?? null,
     fetchedAt: new Date().toISOString(),
   };
