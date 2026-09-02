@@ -127,6 +127,27 @@
 .home-recipe-card figure,.recipe-library-card figure,.related-recipes-grid figure{min-height:0;aspect-ratio:4/3}
 .home-recipe-card figure img,.recipe-library-card figure img,.related-recipes-grid figure img{object-fit:cover}
 .home-recipe-card:hover figure img,.recipe-library-card:hover figure img,.related-recipes-grid>a:hover figure img{transform:scale(1.015)}
+
+/* Recipe product recommendations */
+.recipe-raclette-recommendations{padding:105px 0 115px;background:var(--cream)}
+.recipe-raclette-heading{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4rem;align-items:end}
+.recipe-raclette-heading h2{max-width:820px;margin:.55rem 0 1rem;font-family:var(--font-fraunces),serif;font-size:clamp(2.7rem,4.8vw,5rem);font-weight:520;line-height:1;letter-spacing:-.045em}
+.recipe-raclette-heading>div>p:last-child{max-width:700px;margin:0;color:var(--ink-soft);line-height:1.7}
+.recipe-people-switch{display:grid;grid-template-columns:repeat(3,92px);gap:.55rem;padding:.5rem;background:#e7dfd2;border-radius:22px}
+.recipe-people-switch button{min-height:84px;display:grid;place-items:center;align-content:center;gap:.2rem;padding:.7rem;color:var(--ink-soft);background:transparent;border:0;border-radius:16px;font:inherit;cursor:pointer}
+.recipe-people-switch button strong{font-family:var(--font-fraunces),serif;font-size:1.85rem;font-weight:560;line-height:1}
+.recipe-people-switch button span{font-size:.62rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+.recipe-people-switch button[aria-pressed="true"]{color:white;background:var(--ink);box-shadow:0 10px 24px rgba(29,37,33,.17)}
+.recipe-raclette-selection{display:flex;align-items:end;justify-content:space-between;gap:2rem;margin-top:3.2rem;padding:1.25rem 1.4rem;background:var(--sage);border-radius:18px}
+.recipe-raclette-selection span{color:var(--ember-dark);font-size:.62rem;font-weight:850;letter-spacing:.1em;text-transform:uppercase}
+.recipe-raclette-selection h3{margin:.3rem 0 0;font-family:var(--font-fraunces),serif;font-size:1.7rem;font-weight:540}
+.recipe-raclette-selection>div:last-child{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:flex-end}
+.recipe-raclette-selection a{color:var(--ember-dark);font-size:.72rem;font-weight:850;text-decoration:underline;text-underline-offset:4px}
+.recipe-raclette-grid{margin-top:1.4rem}
+.recipe-raclette-note{max-width:760px;margin:1.2rem 0 0;color:var(--ink-soft);font-size:.68rem;line-height:1.6}
+
+@media(max-width:860px){.recipe-raclette-heading{grid-template-columns:1fr;gap:2rem;align-items:start}.recipe-people-switch{width:min(100%,360px)}.recipe-raclette-selection{align-items:flex-start;flex-direction:column}.recipe-raclette-selection>div:last-child{justify-content:flex-start}}
+@media(max-width:620px){.recipe-raclette-recommendations{padding:78px 0 85px}.recipe-raclette-heading h2{font-size:clamp(2.7rem,13vw,4rem)}.recipe-people-switch{grid-template-columns:repeat(3,1fr);width:100%}.recipe-people-switch button{min-height:76px}.recipe-raclette-selection{margin-top:2rem;padding:1.1rem}.recipe-raclette-selection>div:last-child{display:grid;gap:.8rem}.recipe-raclette-grid{margin-top:1rem}}
 .recipe-article-hero>figure{width:100%;min-height:0;aspect-ratio:4/3;justify-self:end}
 .recipe-article-hero>figure img{object-fit:cover}
 @media(max-width:860px){.recipe-article-hero>figure{justify-self:start}}

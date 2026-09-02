@@ -2,9 +2,29 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { RecipeRacletteRecommendations, type RecipeRecommendationGroup } from "@/components/recipe-raclette-recommendations";
+import { devices } from "@/data/products";
 import { getRecipe, recipes } from "@/data/recipes";
+import type { Product } from "@/data/types";
 
 type Props = { params: Promise<{ slug: string }> };
+
+const recommendationPeople = [2, 4, 8] as const;
+
+function confidenceScore(product: Product) {
+  const rating = product.rating ?? 0;
+  const ratingCount = product.ratingCount ?? 0;
+  const confidenceWeight = ratingCount / (ratingCount + 150);
+  return 4.2 + (rating - 4.2) * confidenceWeight;
+}
+
+const racletteRecommendationGroups: RecipeRecommendationGroup[] = recommendationPeople.map((people) => ({
+  people,
+  products: devices
+    .filter((product) => product.people === people && product.rating !== null)
+    .sort((first, second) => confidenceScore(second) - confidenceScore(first) || (second.ratingCount ?? 0) - (first.ratingCount ?? 0))
+    .slice(0, 3),
+}));
 
 export function generateStaticParams() {
   return recipes.map((recipe) => ({ slug: recipe.slug }));
@@ -130,6 +150,8 @@ export default async function RecipePage({ params }: Props) {
           ))}
         </div>
       </section>
+
+      <RecipeRacletteRecommendations groups={racletteRecommendationGroups} />
     </main>
   );
 }
