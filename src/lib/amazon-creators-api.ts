@@ -1,10 +1,13 @@
 import { unstable_cache } from "next/cache";
+import rawProductImages from "@/data/product-images.json";
+import { productByAsin } from "@/data/products";
 import type { AmazonProductData } from "@/data/types";
 
 const API_URL = "https://creatorsapi.amazon/catalog/v1/getItems";
 const DEFAULT_TOKEN_URL = "https://api.amazon.co.uk/auth/o2/token";
 const MARKETPLACE = process.env.AMAZON_MARKETPLACE ?? "www.amazon.de";
 const MAX_ITEMS_PER_REQUEST = 10;
+const productImages = rawProductImages as Record<string, string>;
 
 type JsonRecord = Record<string, unknown>;
 
@@ -141,6 +144,27 @@ const fetchAmazonBatch = unstable_cache(fetchAmazonBatchUncached, ["amazon-creat
   revalidate: 3600,
 });
 
+function getCatalogFallback(asin: string): AmazonProductData | null {
+  const product = productByAsin.get(asin);
+  const imageUrl = productImages[asin];
+  if (!product || !imageUrl) return null;
+
+  return {
+    asin,
+    title: product.title,
+    detailPageUrl: product.affiliateUrl,
+    imageUrl,
+    imageWidth: null,
+    imageHeight: null,
+    priceAmount: null,
+    priceCurrency: null,
+    priceDisplay: null,
+    availability: "UNKNOWN",
+    availabilityMessage: "Preis und Verfügbarkeit bei Amazon prüfen",
+    fetchedAt: product.checkedAt,
+  };
+}
+
 export async function getAmazonProducts(asins: string[]) {
   const uniqueAsins = Array.from(new Set(asins.filter((asin) => /^[A-Z0-9]{10}$/.test(asin))));
   const batches: string[][] = [];
@@ -148,11 +172,28 @@ export async function getAmazonProducts(asins: string[]) {
     batches.push(uniqueAsins.slice(index, index + MAX_ITEMS_PER_REQUEST));
   }
 
-  try {
-    const results = await Promise.all(batches.map((batch) => fetchAmazonBatch(batch.sort().join(","))));
-    return new Map(results.flat().map((item) => [item.asin, item]));
-  } catch (error) {
-    console.error("Amazon product data could not be refreshed", error instanceof Error ? error.message : error);
-    return new Map<string, AmazonProductData>();
+  let liveItems: AmazonProductData[] = [];
+  if (amazonCreatorsApiIsConfigured()) {
+    try {
+      const results = await Promise.all(batches.map((batch) => fetchAmazonBatch(batch.sort().join(","))));
+      liveItems = results.flat();
+    } catch (error) {
+      console.error("Amazon product data could not be refreshed", error instanceof Error ? error.message : error);
+    }
   }
+
+  const liveByAsin = new Map(liveItems.map((item) => [item.asin, item]));
+  const resolved = uniqueAsins.flatMap((asin) => {
+    const live = liveByAsin.get(asin);
+    const fallback = getCatalogFallback(asin);
+    if (!live) return fallback ? [fallback] : [];
+    return [{
+      ...live,
+      imageUrl: live.imageUrl ?? fallback?.imageUrl ?? null,
+      imageWidth: live.imageWidth ?? fallback?.imageWidth ?? null,
+      imageHeight: live.imageHeight ?? fallback?.imageHeight ?? null,
+    }];
+  });
+
+  return new Map(resolved.map((item) => [item.asin, item]));
 }
