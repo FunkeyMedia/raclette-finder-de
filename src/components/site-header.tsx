@@ -9,7 +9,7 @@ const links = [
   { href: "/finder", label: "Finder" },
   { href: "/produkte", label: "Produkte" },
   { href: "/vergleich", label: "Vergleich" },
-  { href: "/ratgeber", label: "Ratgeber" },
+  { href: "/rezepte", label: "Rezepte" },
   { href: "/so-funktionierts", label: "Unsere Methode" },
 ];
 

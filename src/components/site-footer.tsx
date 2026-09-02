@@ -6,7 +6,7 @@ export function SiteFooter() {
     <footer className="site-footer">
       <div className="site-width footer-grid">
         <div><Link className="brand" href="/" aria-label="Raclette Finder Startseite"><Image alt="" className="brand-logo footer-brand-logo" height={435} src="/images/brand/raclette-finder-logo-header-v1.png" width={1705} /></Link><p>Weniger vergleichen. Besser zusammenkommen.</p></div>
-        <div><h2>Entdecken</h2><Link href="/finder">Produktfinder</Link><Link href="/vergleich">Vergleich</Link><Link href="/ratgeber">Rezepte &amp; Ideen</Link><Link href="/produkte">Alle Geräte</Link></div>
+        <div><h2>Entdecken</h2><Link href="/finder">Produktfinder</Link><Link href="/vergleich">Vergleich</Link><Link href="/rezepte">100 Raclette-Rezepte</Link><Link href="/ratgeber">Raclette-Ratgeber</Link><Link href="/produkte">Alle Geräte</Link></div>
         <div><h2>Vertrauen</h2><Link href="/so-funktionierts">So empfehlen wir</Link><Link href="/ueber-uns">Über uns</Link><Link href="/affiliate-transparenz">Affiliate-Transparenz</Link><Link href="/kontakt">Kontakt</Link></div>
         <div><h2>Rechtliches</h2><Link href="/impressum">Impressum</Link><Link href="/datenschutz">Datenschutz</Link><p className="affiliate-mini">Als Amazon-Partner verdienen wir an qualifizierten Verkäufen.</p></div>
       </div>

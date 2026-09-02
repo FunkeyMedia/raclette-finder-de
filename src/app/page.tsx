@@ -6,23 +6,26 @@ import { getAmazonProducts } from "@/lib/amazon-creators-api";
 
 const featuredRecipes = [
   {
-    title: "Alpen-Klassiker",
+    title: "Klassisches Raclette",
     mood: "Herzstück",
-    image: "/images/recipes/01-alpen-klassiker.jpg",
+    image: "/images/recipe-blog/original/001.webp",
+    slug: "klassisches-raclette",
     alt: "Raclette-Pfännchen mit Kartoffeln, Speck, Käse und Cornichons",
     ingredients: "Kartoffeln · Speck · Raclettekäse · Cornichons",
   },
   {
     title: "Flammkuchen-Pfännchen",
     mood: "Knusperliebe",
-    image: "/images/recipes/02-flammkuchen.jpg",
+    image: "/images/recipe-blog/original/010.webp",
+    slug: "flammkuchen-raclette",
     alt: "Knuspriges Flammkuchen-Pfännchen mit Crème fraîche, Zwiebeln und Speck",
     ingredients: "Fladenbrot · Crème fraîche · Zwiebel · Bergkäse",
   },
   {
     title: "Pizza Margherita",
     mood: "Für alle",
-    image: "/images/recipes/03-pizza-margherita.jpg",
+    image: "/images/recipe-blog/original/011.webp",
+    slug: "pizza-margherita",
     alt: "Pizza-Margherita-Pfännchen mit Tomate, Mozzarella und Basilikum",
     ingredients: "Baguette · Tomatensauce · Mozzarella · Basilikum",
   },
@@ -68,8 +71,8 @@ export default async function Home() {
       <section className="home-recipe-section" aria-labelledby="home-recipes-title">
         <div className="site-width">
           <div className="section-heading split">
-            <div><p className="section-number">02 — Pfännchen-Ideen</p><h2 id="home-recipes-title">Drei Rezepte für den ersten Genuss.</h2></div>
-            <Link className="outline-link" href="/ratgeber">Alle 20 Rezepte ansehen</Link>
+            <div><p className="section-number">02 — Pfännchen-Ideen</p><h2 id="home-recipes-title">Drei von 100 Ideen für den ersten Genuss.</h2></div>
+            <Link className="outline-link" href="/rezepte">Alle 100 Rezepte ansehen</Link>
           </div>
           <div className="home-recipe-grid">
             {featuredRecipes.map((recipe, index) => (
@@ -81,7 +84,7 @@ export default async function Home() {
                   <p><span>{String(index + 1).padStart(2, "0")}</span>{recipe.mood}</p>
                   <h3>{recipe.title}</h3>
                   <p className="home-recipe-ingredients">{recipe.ingredients}</p>
-                  <Link href="/ratgeber#klassiker">Rezept entdecken <span aria-hidden="true">→</span></Link>
+                  <Link href={`/rezepte/${recipe.slug}`}>Rezept entdecken <span aria-hidden="true">→</span></Link>
                 </div>
               </article>
             ))}
