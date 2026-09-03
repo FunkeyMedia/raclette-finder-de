@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AiImageBadge } from "@/components/ai-image-badge";
 import { RecipeRacletteRecommendations, type RecipeRecommendationGroup } from "@/components/recipe-raclette-recommendations";
 import { devices } from "@/data/products";
 import { getRecipe, recipes } from "@/data/recipes";
@@ -103,6 +104,7 @@ export default async function RecipePage({ params }: Props) {
           </div>
           <figure>
             <Image alt={recipe.imageAlt} fill loading="eager" sizes="(max-width: 860px) 100vw, 48vw" src={recipe.image} />
+            <AiImageBadge />
           </figure>
         </header>
 
@@ -144,7 +146,7 @@ export default async function RecipePage({ params }: Props) {
         <div className="related-recipes-grid">
           {related.map((item) => (
             <Link href={`/rezepte/${item.slug}`} key={item.slug}>
-              <figure><Image alt={item.imageAlt} fill sizes="(max-width: 620px) 100vw, 33vw" src={item.image} /></figure>
+              <figure><Image alt={item.imageAlt} fill sizes="(max-width: 620px) 100vw, 33vw" src={item.image} /><AiImageBadge /></figure>
               <p>{item.category}</p><h3>{item.title}</h3><span>Rezept öffnen →</span>
             </Link>
           ))}

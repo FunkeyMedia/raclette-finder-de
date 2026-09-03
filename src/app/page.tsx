@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { AiImageBadge } from "@/components/ai-image-badge";
 import { ProductCard } from "@/components/product-card";
 import { devices } from "@/data/products";
 import { getAmazonProducts } from "@/lib/amazon-creators-api";
@@ -45,6 +46,7 @@ export default async function Home() {
           sizes="100vw"
           src="/images/hero-raclette-evening.png"
         />
+        <AiImageBadge />
         <div className="hero-photo-shade" aria-hidden="true" />
         <div className="hero-glow" aria-hidden="true" />
         <div className="site-width hero-grid">
@@ -79,6 +81,7 @@ export default async function Home() {
               <article className="home-recipe-card" key={recipe.title}>
                 <figure>
                   <Image alt={recipe.alt} fill sizes="(max-width: 620px) 100vw, (max-width: 980px) 50vw, 33vw" src={recipe.image} />
+                  <AiImageBadge />
                 </figure>
                 <div>
                   <p><span>{String(index + 1).padStart(2, "0")}</span>{recipe.mood}</p>

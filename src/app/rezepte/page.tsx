@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { AiImageBadge } from "@/components/ai-image-badge";
 import { recipeCategories, recipes } from "@/data/recipes";
 
 export const metadata: Metadata = {
@@ -58,6 +59,7 @@ export default function RecipesPage() {
               sizes="(max-width: 860px) 100vw, 46vw"
               src="/images/recipe-blog/unique/001.webp"
             />
+            <AiImageBadge />
           </figure>
         </div>
       </section>
@@ -86,6 +88,7 @@ export default function RecipesPage() {
                     <Link href={`/rezepte/${recipe.slug}`} aria-label={`${recipe.title} öffnen`}>
                       <figure>
                         <Image alt={recipe.imageAlt} fill sizes="(max-width: 620px) 100vw, (max-width: 980px) 50vw, 33vw" src={recipe.image} />
+                        <AiImageBadge />
                       </figure>
                       <div>
                         <p>{recipe.category}</p>

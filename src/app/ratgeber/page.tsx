@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { AiImageBadge } from "@/components/ai-image-badge";
 
 type Recipe = {
   title: string;
@@ -290,6 +291,7 @@ function RecipeCard({ recipe, index }: { recipe: Recipe; index: number }) {
           sizes="(max-width: 620px) calc(100vw - 28px), (max-width: 1180px) 50vw, 580px"
           src={`/images/recipes/${recipeImages[index]}`}
         />
+        <AiImageBadge />
       </figure>
       <div className="recipe-card-content">
         <div className="recipe-card-topline">
@@ -357,6 +359,7 @@ export default function GuidePage() {
               sizes="(max-width: 860px) 100vw, 48vw"
               src="/images/hero-raclette-evening.png"
             />
+            <AiImageBadge />
             <figcaption><span>Mehr als Abendessen</span> Die besten Erinnerungen passen in kein Pfännchen.</figcaption>
           </figure>
         </div>
@@ -418,6 +421,7 @@ export default function GuidePage() {
                       sizes="(max-width: 860px) 100vw, 58vw"
                       src="/images/finder-raclette-table.png"
                     />
+                    <AiImageBadge />
                   </figure>
                   <div>
                     <p className="section-number">Der schönste Teil</p>
