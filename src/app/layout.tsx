@@ -20,6 +20,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="de" data-scroll-behavior="smooth" className={`${manrope.variable} ${fraunces.variable}`}>
+      <head>
+        <meta name="p:domain_verify" content="43779aaad2f5dc19676370fe7fad9384" />
+      </head>
       <body>
         <a className="skip-link" href="#main-content">Zum Inhalt springen</a>
         <SiteHeader />
