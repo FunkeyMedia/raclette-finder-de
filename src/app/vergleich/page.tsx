@@ -6,6 +6,8 @@ import { ProductVisual } from "@/components/product-visual";
 import { devices, productByAsin } from "@/data/products";
 import type { Product } from "@/data/types";
 import { getAmazonProducts } from "@/lib/amazon-creators-api";
+import { selectComparisonIds } from "@/lib/comparison-state";
+import { ComparisonLink } from "@/components/comparison-link";
 
 export const metadata: Metadata = {
   title: "Raclette-Vergleich",
@@ -19,14 +21,12 @@ export default async function ComparePage({
 }: PageProps<"/vergleich">) {
   const params = await searchParams;
   const raw = Array.isArray(params.ids) ? params.ids[0] : params.ids;
-  const ids =
-    raw?.split(",").slice(0, 4) ??
-    devices.slice(0, 3).map((product) => product.asin);
+  const ids = selectComparisonIds(raw, devices.map((product) => product.asin), devices.slice(0, 3).map((product) => product.asin));
   const selected = ids
     .map((id) => productByAsin.get(id))
     .filter((product): product is Product => product?.type === "device")
     .slice(0, 4);
-  const products = selected.length >= 2 ? selected : devices.slice(0, 3);
+  const products = selected;
   const amazonProducts = await getAmazonProducts(products.map((product) => product.asin));
   const rows = [
     {
@@ -83,7 +83,11 @@ export default async function ComparePage({
       </section>
       <section className="compare-section">
         <div className="site-width">
-          <div
+          {raw === undefined && <p className="table-note">Beispielvergleich: Diese drei Geräte sind vorausgewählt. Deine eigene Auswahl stellst du im Produktkatalog zusammen.</p>}
+          {products.length === 0 && <p role="status">Die Geräte aus diesem Link sind nicht im aktuellen Katalog enthalten. <Link href="/produkte">Geräte neu auswählen</Link></p>}
+          {products.length === 1 && <p className="table-note">Ein Gerät ausgewählt. <Link href="/produkte">Weitere Geräte zum Vergleichen auswählen</Link></p>}
+          {products.length > 0 && <ComparisonLink key={ids.join(",")} ids={ids} />}
+          {products.length > 0 && <><div
             className="compare-grid"
             style={{ "--columns": products.length } as CSSProperties}
           >
@@ -119,7 +123,7 @@ export default async function ComparePage({
             * Preise und Originalbilder stammen aus der Amazon Creators API.
             Bewertungen sind dokumentierte Momentaufnahmen und keine eigene
             Testbewertung. Aktuelle Angaben bitte bei Amazon prüfen.
-          </p>
+          </p></>}
           <div className="compare-bottom">
             <Link href="/finder">Finder neu starten</Link>
             <Link href="/produkte">Weitere Geräte ansehen</Link>
